@@ -8,9 +8,16 @@ export const clearInput = () => {
 };
 export const clearResults = () => {
     elements.searchResultList.innerHTML = "";
+    elements.searchResPages.innerHTML = "";
 }
-export const renderResults = (recipes) => {
-    recipes.forEach(renderRecipe);
+export const renderResults = (recipes, page = 1, resPerPage = 10) => {
+    //render result of current page
+    const start = (page - 1) * resPerPage;
+    const end = page * resPerPage;
+
+    recipes.slice(start, end).forEach(renderRecipe);
+    //pagination buttons
+    renderButtons(page, recipes.length, resPerPage)
 }
 
 //logic functions
@@ -43,4 +50,32 @@ const limitRecipeTitle = (title, limit = 17) => {
         return `${newTitle.join(" ")}...`
     }
     return title
+}
+//type : "prev" or "next"
+const createButton = (page, type) => `
+            <button class="btn-inline results__btn--${type}" data-goto = ${type === "prev" ? page - 1 : page + 1}>
+            <span>Page ${type === "prev" ? page - 1 : page + 1}</span>
+                <svg class="search__icon">
+                    <use href="img/icons.svg#icon-triangle-${type === "prev" ? "left" : "right"}"></use>
+                </svg>
+            </button>
+`;
+const renderButtons = (page, numResults, resPerPage) => {
+    const pages = Math.ceil(numResults / resPerPage);
+    let button;
+    if (page === 1 && pages > 1) {
+        //button to go to next page
+        button = createButton(page, "next")
+    }
+    else if (page < pages) {
+        //buttons to go to next page and previous page
+        button = `${createButton(page, "prev")}
+                  ${createButton(page, "next")}`
+
+    }
+    else if (page === pages && pages > 1) {
+        //button to previous page
+        button = createButton(page, "prev")
+    }
+    elements.searchResPages.insertAdjacentHTML("afterbegin", button)
 }
