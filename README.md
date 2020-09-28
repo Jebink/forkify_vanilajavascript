@@ -9,7 +9,9 @@ Based on the original project by [Jonas Schmedtmann](http://codingheroes.io/)'s 
 
 ---
 
-## \*\* Heroku url https://jebinforkify.herokuapp.com/dist/index.html
+## Heroku url
+
+https://jebinforkify.herokuapp.com/dist/index.html
 
 ## About
 
