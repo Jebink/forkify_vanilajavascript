@@ -25,3 +25,4 @@ This is a cookbook application that contains recipes for multiple different food
 2. Prepare for production using `npm run build`.
 3. Run with your live server program, in VS Code an extension called Live Server will work
 4. Enjoy the app :+1: :)
+# forkify
