@@ -8,6 +8,20 @@
 *::after {
   box-sizing: inherit;
 }
+.badge {
+  position: relative;
+  right: 8px;
+  top: -12px;
+  font-size: 10px;
+  font-weight: bold;
+  height: 15px;
+  width: 15px;
+  border-radius: 7.5px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

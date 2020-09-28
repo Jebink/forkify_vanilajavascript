@@ -8,6 +8,7 @@ export const toggleLikeBtn = (isLiked) => {
 }
 export const toggleLikeMenu = numLikes => {
     elements.likesMenu.style.visibility = numLikes > 0 ? "visible" : "hidden"
+    elements.badge.innerText = `${numLikes}`
 }
 export const renderLike = like => {
     const markup = ` 
