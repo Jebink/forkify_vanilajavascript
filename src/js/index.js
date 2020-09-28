@@ -55,12 +55,15 @@ elements.searchResPages.addEventListener("click", e => {
 const controllRecipe = async () => {
     //get id from url
     const id = window.location.hash.replace("#", "")
-    console.log(id);
     if (id) {
 
         //prepare ui change
         recipeView.clearRecipe()
         renderLoader(elements.recipe)
+
+
+        //highlight sector 
+        if (state.search) searchView.highlightSelected(id)
 
         //create recipe object
         state.recipe = new Recipe(id)
@@ -69,7 +72,6 @@ const controllRecipe = async () => {
 
             //get recipe data and parse ingredients
             await state.recipe.getRecipe()
-            console.log(state.recipe.ingredients);
             state.recipe.parseIngredients()
 
             //calculate serving and time
@@ -86,3 +88,19 @@ const controllRecipe = async () => {
     }
 }
 ["hashchange", "load"].forEach(event => addEventListener(event, controllRecipe));
+
+//handling recipe button clicks
+elements.recipe.addEventListener("click", e => {
+    if (e.target.matches(`.btn-dec, .btn-dec *`)) {
+        //dec btn is clicked
+        if (state.recipe.servings > 1) {
+            state.recipe.updateServings("dec")
+            recipeView.updateServingsIngredients(state.recipe)
+        }
+    }
+    else if (e.target.matches(`.btn-inc, .btn-inc *`)) {
+        //inc btn is clicked
+        state.recipe.updateServings("inc")
+        recipeView.updateServingsIngredients(state.recipe)
+    }
+})

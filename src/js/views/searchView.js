@@ -2,7 +2,11 @@ import { elements } from "./base"
 
 //exporting functions
 export const highlightSelected = id => {
-    document.querySelector(`a[href=#${id}]`).classList.add(".result__link--active")
+    const resultsArray = Array.from(document.querySelectorAll(".results__link"))
+    resultsArray.forEach(el => {
+        el.classList.remove("results__link--active")
+    })
+    document.querySelector(`a[href="#${id}"]`).classList.add("results__link--active")
 }
 export const getInput = () => elements.searchInput.value
 
