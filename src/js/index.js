@@ -91,7 +91,6 @@ const controllRecipe = async () => {
             recipeView.renderRecipe(state.recipe, state.likes.isLiked(id))
         }
         catch (err) {
-            console.log(err);
             alert("Error processing recipe! ")
         }
 
@@ -125,17 +124,10 @@ elements.shopping.addEventListener("click", e => {
         state.list.updateCount(id, val);
     }
 })
-
-//Testing
-state.likes = new Likes()
-likesView.toggleLikeMenu(state.likes.getNumLikes())
-
 /*LIKE CONTROLLER */
 const controllLike = () => {
-    console.log("id");
     if (!state.likes) state.likes = new Likes()
     const currentId = state.recipe.id
-    console.log("curId", currentId);
     //USER not liked the recipe
     if (!state.likes.isLiked(currentId)) {
         //add like to the state
@@ -161,6 +153,15 @@ const controllLike = () => {
     }
     likesView.toggleLikeMenu(state.likes.getNumLikes())
 }
+//restorin likes
+window.addEventListener("load", () => {
+    //Testing
+    state.likes = new Likes()
+    state.likes.readStorage()
+    likesView.toggleLikeMenu(state.likes.getNumLikes())
+    //render the existing likes
+    state.likes.likes.forEach(like => likesView.renderLike(like))
+})
 
 //handling recipe button clicks
 elements.recipe.addEventListener("click", e => {
