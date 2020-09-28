@@ -1,9 +1,12 @@
 // Global app controller
 import Search from "./models/Search"
 import Recipe from "./models/Recipe"
-import { elements, renderLoader, clearLoader } from "./views/base"
+import List from "./models/List"
+
 import * as searchView from "./views/searchView"
 import * as recipeView from "./views/recipeView"
+import * as listView from "./views/listView"
+import { elements, renderLoader, clearLoader } from "./views/base"
 /**Global state of the App*
  * - Search object
  * -current recipie
@@ -11,6 +14,8 @@ import * as recipeView from "./views/recipeView"
  * -liked recipies
  */
 const state = {};
+window.state = state
+
 /*SEARCH CONTROLLER */
 const controlSearch = async () => {
     //1) get query from the view
@@ -51,6 +56,8 @@ elements.searchResPages.addEventListener("click", e => {
     }
 })
 
+
+
 /*RECIPE CONTROLLER */
 const controllRecipe = async () => {
     //get id from url
@@ -89,6 +96,33 @@ const controllRecipe = async () => {
 }
 ["hashchange", "load"].forEach(event => addEventListener(event, controllRecipe));
 
+/*LIST CONTROLLER */
+const controllList = () => {
+    //create a new list if noone present
+    if (!state.list) state.list = new List();
+
+    //each ing to list and ui
+    console.log(state.recipe.ingredients);
+    state.recipe.ingredients.forEach(el => {
+        const item = state.list.addItem(el.count, el.unit, el.ingredient)
+        listView.renderItem(item)
+    })
+}
+//Handle delete and Update functions
+elements.shopping.addEventListener("click", e => {
+    const id = e.target.closest(".shopping__item").dataset.itemid;
+    //Handle the delete button
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        //delete from state and ui
+        state.list.deleteItem(id)
+        listView.deleteItem(id)
+    }
+    //Handle count update
+    else if (e.target.matches(".shopping__count-value")) {
+        const val = parseFloat(e.target.value)
+        state.list.updateCount(id, val);
+    }
+})
 //handling recipe button clicks
 elements.recipe.addEventListener("click", e => {
     if (e.target.matches(`.btn-dec, .btn-dec *`)) {
@@ -103,4 +137,9 @@ elements.recipe.addEventListener("click", e => {
         state.recipe.updateServings("inc")
         recipeView.updateServingsIngredients(state.recipe)
     }
+    else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controllList()
+    }
 })
+
+
