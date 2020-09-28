@@ -1,6 +1,9 @@
 import { elements } from "./base"
 
 //exporting functions
+export const highlightSelected = id => {
+    document.querySelector(`a[href=#${id}]`).classList.add(".result__link--active")
+}
 export const getInput = () => elements.searchInput.value
 
 export const clearInput = () => {
