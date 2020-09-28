@@ -6,7 +6,7 @@ export const highlightSelected = id => {
     resultsArray.forEach(el => {
         el.classList.remove("results__link--active")
     })
-    document.querySelector(`a[href="#${id}"]`).classList.add("results__link--active")
+    document.querySelector(`.results__link[href*="#${id}"]`).classList.add("results__link--active")
 }
 export const getInput = () => elements.searchInput.value
 
@@ -27,6 +27,19 @@ export const renderResults = (recipes, page = 1, resPerPage = 10) => {
     renderButtons(page, recipes.length, resPerPage)
 }
 
+export const limitRecipeTitle = (title, limit = 17) => {
+    const newTitle = []
+    if (title.length > limit) {
+        title.split(" ").reduce((acc, cur) => {
+            if (acc + cur.length <= limit) {
+                newTitle.push(cur)
+            }
+            return acc + cur.length
+        }, 0);
+        return `${newTitle.join(" ")}...`
+    }
+    return title
+}
 //logic functions
 const renderRecipe = recipe => {
     const markUp = `
@@ -45,19 +58,6 @@ const renderRecipe = recipe => {
     elements.searchResultList.insertAdjacentHTML(`beforeend`, markUp)
 }
 
-const limitRecipeTitle = (title, limit = 17) => {
-    const newTitle = []
-    if (title.length > limit) {
-        title.split(" ").reduce((acc, cur) => {
-            if (acc + cur.length <= limit) {
-                newTitle.push(cur)
-            }
-            return acc + cur.length
-        }, 0);
-        return `${newTitle.join(" ")}...`
-    }
-    return title
-}
 //type : "prev" or "next"
 const createButton = (page, type) => `
             <button class="btn-inline results__btn--${type}" data-goto = ${type === "prev" ? page - 1 : page + 1}>
